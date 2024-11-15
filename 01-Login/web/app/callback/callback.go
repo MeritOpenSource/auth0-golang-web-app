@@ -1,7 +1,9 @@
 package callback
 
 import (
+	"golang.org/x/oauth2"
 	"net/http"
+	"os"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -19,7 +21,11 @@ func Handler(auth *authenticator.Authenticator) gin.HandlerFunc {
 		}
 
 		// Exchange an authorization code for a token.
-		token, err := auth.Exchange(ctx.Request.Context(), ctx.Query("code"))
+		code := ctx.Query("code")
+		token, err := auth.Exchange(ctx.Request.Context(), code,
+			oauth2.SetAuthURLParam("audience", os.Getenv("MERIT_AUDIENCE")),
+			oauth2.SetAuthURLParam("scope", "openid profile read:container"),
+		)
 		if err != nil {
 			ctx.String(http.StatusUnauthorized, "Failed to convert an authorization code into a token.")
 			return

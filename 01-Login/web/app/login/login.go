@@ -3,7 +3,9 @@ package login
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"golang.org/x/oauth2"
 	"net/http"
+	"os"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -28,7 +30,12 @@ func Handler(auth *authenticator.Authenticator) gin.HandlerFunc {
 			return
 		}
 
-		ctx.Redirect(http.StatusTemporaryRedirect, auth.AuthCodeURL(state))
+		// Note: The "audience" parameter is used to specify the API service that the client is
+		// interacting with
+		url := auth.AuthCodeURL(state,
+			oauth2.SetAuthURLParam("audience", os.Getenv("MERIT_AUDIENCE")),
+		)
+		ctx.Redirect(http.StatusTemporaryRedirect, url)
 	}
 }
 

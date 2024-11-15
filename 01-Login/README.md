@@ -1,14 +1,23 @@
-# Auth0 + Go Web App Sample
+# Merit + Auth0 + Go Web App Sample
 
-This sample demonstrates how to add authentication to a Go web app using Auth0.
+This sample demonstrates how to add authentication to a Go web app using Auth0 and interact with the Merit APIs.
 
-Check the [Go Quickstart](https://auth0.com/docs/quickstart/webapp/golang) to better understand this sample.
+Check the [Go Quickstart](https://auth0.com/docs/quickstart/webapp/golang) to better understand this sample for
+authentication with Auth0. [Contact Merit](https://www.merits.com/resources/developers/contact) to get set up with an
+Agent to perform API interactions and refer to the ReadMe documentation on the
+[Merit API](https://merit-developer-portal.readme.io/docs/getting-started) for more information.
+
+This sample web-app is a standard setup for Auth0 web-apps, not for single page applications or native binaries. For 
+the recommended setup for those use cases, please refer to the [Auth0 Docs on PKCE].
+
+This sample web-app does demonstrate standard interactions with the Merit API.
 
 ## Running the App
 
 To run the app, make sure you have **go** installed.
 
-Rename the `.env.example` file to `.env` and provide your Auth0 credentials.
+Rename the `.env.example` file to `.env` and provide your Auth0 credentials. You will also be told of the API url as
+well as the audience for the API.
 
 ```bash
 # .env
@@ -17,9 +26,12 @@ AUTH0_CLIENT_ID={CLIENT_ID}
 AUTH0_DOMAIN={DOMAIN}
 AUTH0_CLIENT_SECRET={CLIENT_SECRET}
 AUTH0_CALLBACK_URL=http://localhost:3000/callback
+MERIT_API_URL={MERIT_API_URL}
+MERIT_AUDIENCE={MERIT_AUDIENCE}
+
 ```
 
-Once you've set your Auth0 credentials in the `.env` file, run `go mod vendor` to download the Go dependencies.
+Once you've set your Auth0 credentials in the `.env` file, run `go mod download` to download the Go dependencies.
 
 Run `go run main.go` to start the app and navigate to [http://localhost:3000/](http://localhost:3000/).
 
@@ -50,3 +62,5 @@ If you have found a bug or if you have a feature request, please report them at 
 ## License
 
 This project is licensed under the MIT license. See the [LICENSE](LICENSE.txt) file for more info.
+
+[Auth0 Docs on PKCE]:https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow-with-pkce

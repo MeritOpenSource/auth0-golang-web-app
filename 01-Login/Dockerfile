@@ -1,4 +1,4 @@
-FROM golang:1.19.3-alpine3.17
+FROM golang:1.23-alpine3.20 AS builder
 
 # Define current working directory
 WORKDIR /01-Login
@@ -14,7 +14,18 @@ COPY . .
 
 RUN go build -o out/auth0-go-web-app .
 
+FROM alpine:3.20 AS app
+
+ENV HOME=/
+
+# Copy the binary from the builder stage
+COPY --from=builder /01-Login/out/auth0-go-web-app /auth0-go-web-app
+
+# Copy the website files
+COPY --from=builder /01-Login/web/static /web/static
+COPY --from=builder /01-Login/web/template /web/template
+
 # Expose port 3000 for our web app binary
 EXPOSE 3000
 
-CMD ["/01-Login/out/auth0-go-web-app"]
+CMD ["/auth0-go-web-app"]

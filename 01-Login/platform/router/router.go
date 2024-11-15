@@ -1,6 +1,7 @@
 package router
 
 import (
+	"01-Login/platform/merit"
 	"encoding/gob"
 
 	"github.com/gin-contrib/sessions"
@@ -17,7 +18,7 @@ import (
 )
 
 // New registers the routes and returns the router.
-func New(auth *authenticator.Authenticator) *gin.Engine {
+func New(auth *authenticator.Authenticator, client merit.PlatformClient) *gin.Engine {
 	router := gin.Default()
 
 	// To store custom types in our cookies,
@@ -33,7 +34,7 @@ func New(auth *authenticator.Authenticator) *gin.Engine {
 	router.GET("/", home.Handler)
 	router.GET("/login", login.Handler(auth))
 	router.GET("/callback", callback.Handler(auth))
-	router.GET("/user", middleware.IsAuthenticated, user.Handler)
+	router.GET("/user", middleware.IsAuthenticated, user.Handler(client))
 	router.GET("/logout", logout.Handler)
 
 	return router
